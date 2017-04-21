@@ -1,0 +1,7 @@
+success: !!com.test.uctf.modal.TestCase
+  dataId: testDataId
+  logicId: testLogicId
+  dataSource:
+    name: testname
+    age: 18
+
