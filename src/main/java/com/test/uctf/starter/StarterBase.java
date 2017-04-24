@@ -1,6 +1,9 @@
 package com.test.uctf.starter;
 
+import com.test.uctf.common.TestRuntime;
+import com.test.uctf.common.TestTemplete;
 import com.test.uctf.modal.TestCase;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 
 import java.util.ArrayList;
@@ -35,6 +38,11 @@ public class StarterBase {
         testCaseList.add(case1);
         testCaseList.add(case2);
         return transforIterable(testCaseList);
+    }
+
+    @BeforeClass
+    public void startTestRuntime() {
+        TestRuntime.startTestRuntime();
     }
 
     private Object[][] transforIterable(List<TestCase> list) {

@@ -1,7 +1,6 @@
 package com.test.uctf.util;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
