@@ -11,6 +11,11 @@ public class Person {
 
     public Person(){}
 
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
     /**
      * Getter method for property name.
      *

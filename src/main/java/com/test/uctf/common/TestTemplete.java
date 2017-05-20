@@ -1,13 +1,6 @@
 package com.test.uctf.common;
 
-import com.test.uctf.modal.GeneralConfig;
-import com.test.uctf.standart.BasePath;
 import org.apache.log4j.Logger;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
 
 /**
   * @author jiacai.sjc

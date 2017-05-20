@@ -13,5 +13,7 @@ public enum Process {
 
     check,
 
-    chear
+    clear,
+
+    logic,
 }

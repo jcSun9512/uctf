@@ -14,9 +14,7 @@ import java.util.List;
 public class StartSpecialTest extends StarterBase{
     @Test(dataProvider = "buildSpecialTestCase")
     public void test(TestCase testCase) {
-        System.out.println(testCase.getDataId());
-        testCase = YamlUtil.loadYaml("src/test/resources/testcase/testData.yaml", "success", null);
-        System.out.print(testCase.toString());
+
     }
 
     @Override

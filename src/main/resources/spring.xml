@@ -5,4 +5,31 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        ">
 
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="logicComponent" class="com.test.uctf.common.component.LogicComponent" />
+
+    <bean id="prepareComponent" class="com.test.uctf.common.component.PrepareComponent" />
+
+    <bean id="mockComponent" class="com.test.uctf.common.component.MockComponent" />
+
+    <bean id="executeComponent" class="com.test.uctf.common.component.ExecuteComponent" />
+
+    <bean id="checkComponent" class="com.test.uctf.common.component.CheckComponent" />
+
+    <bean id="clearComponent" class="com.test.uctf.common.component.ClearComponent" />
+
+    <bean id="componentFactory" class="com.test.uctf.common.ComponentFactory">
+        <property name="processList">
+            <list>
+                <ref bean="logicComponent" />
+                <ref bean="prepareComponent" />
+                <ref bean="mockComponent" />
+                <ref bean="executeComponent" />
+                <ref bean="checkComponent" />
+                <ref bean="clearComponent" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

@@ -39,7 +39,7 @@ public class TestRuntime {
 
     private static void defaultLoadApplication() {
         ApplicationContext context = new ClassPathXmlApplicationContext(BasePath.defaultApplicationPath);
-        TestRuntime.setApplicationContext(context);
+        setApplicationContext(context);
     }
 
     private static void defaultLoadConfig() {
@@ -50,10 +50,10 @@ public class TestRuntime {
 
             GeneralConfig config = new GeneralConfig();
             String value = properties.getProperty("dataPath");
-            if(value != null) config.setDataPath(value);
+            if(value != null) config.setDataPath(BasePath.TEST_RESOURCES + value);
 
             value = properties.getProperty("componentPath");
-            if(value != null) config.setComponentPath(value);
+            if(value != null) config.setComponentPath(BasePath.TEST_JAVA + value);
 
             TestRuntime.setGeneralConfig(config);
 
@@ -71,11 +71,12 @@ public class TestRuntime {
     }
 
     private static void defaultLoadComponent() {
-
+        componentFactory = (ComponentFactory) applicationContext.getBean("componentFactory");
+        componentFactory.load(generalConfig.getComponentPath());
     }
 
     private static void defaultLoadTestData() {
-
+        
     }
 
     /**

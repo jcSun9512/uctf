@@ -1,7 +1,6 @@
 package com.test.uctf.starter;
 
 import com.test.uctf.common.TestRuntime;
-import com.test.uctf.common.TestTemplete;
 import com.test.uctf.modal.TestCase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
