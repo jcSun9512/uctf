@@ -1,0 +1,18 @@
+success: !!com.test.uctf.modal.MockModel
+  beanId: personInfo
+  facadeName: person
+  facadeClass: com.test.uctf.testcase.Person
+  methodName: out
+  result: !!com.test.uctf.testcase.Person
+    name: 'success'
+    age: 22
+
+
+fail: !!com.test.uctf.modal.MockModel
+  beanId: personInfo
+  facadeName: person
+  facadeClass: com.test.uctf.testcase.Person
+  methodName: out
+  result: !!com.test.uctf.testcase.Person
+    name: 'falil'
+    age: 22

@@ -1,10 +1,13 @@
 package com.test.uctf.util;
 
+import com.test.uctf.modal.TestCase;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,5 +54,28 @@ public class YamlUtil {
         return null;
     }
 
+    public static List<TestCase> loadTestCase(File file) {
+        List<TestCase> list = new ArrayList<TestCase>();
+        StringReader reader = new StringReader(VelocityUtil.evaluateFile(file, null));
+        Yaml yaml = new Yaml();
+        List<Object> result =  (List<Object>)yaml.load(reader);
+        for(Object obj : result) {
+            if(obj instanceof TestCase)
+                list.add((TestCase) obj);
 
+        }
+        return list;
+    }
+
+
+}
+
+class TestObject {
+    private String name;
+
+    private int age;
+
+    private boolean state;
+
+    private Map<String, List<String>> context;
 }

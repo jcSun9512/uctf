@@ -15,4 +15,6 @@ public @interface Logic {
 
     String description() default "";
 
+    boolean alone() default false;
+
 }

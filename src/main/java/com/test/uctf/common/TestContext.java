@@ -1,9 +1,14 @@
 package com.test.uctf.common;
 
 
+import com.test.uctf.modal.MockCase;
+import com.test.uctf.modal.MockModel;
 import com.test.uctf.modal.TestCase;
+import org.apache.commons.collections.map.HashedMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,12 +23,15 @@ public class TestContext {
 
     private TestContext fatherContext;
 
+    private List<MockCase> mockRepertory;
 
     public TestContext() {
         context = new HashMap<String, Object>();
+        mockRepertory = new ArrayList<MockCase>();
         testCase = null;
         fatherContext = null;
     }
+
 
     public <T> T getAttribute(String key) {
         return (T) context.get(key);
@@ -35,6 +43,30 @@ public class TestContext {
 
     public void setAttribute(String key, Object value) {
         context.put(key, value);
+    }
+
+    public void setAllAttribute(Map<String, Object> map) {
+        if(map == null) return;
+        for(Map.Entry<String, Object> entry : map.entrySet()) {
+            context.put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public void addMock(MockCase mockCase) {
+        mockRepertory.add(mockCase);
+    }
+
+    public Object getBean(String beanId) {
+        return TestRuntime.getApplicationContext().getBean(beanId);
+    }
+
+    /**
+     * Getter method for property mockRepertory.
+     *
+     * @return property value of mockRepertory
+     */
+    public List<MockCase> getMockRepertory() {
+        return mockRepertory;
     }
 
     /**
@@ -89,5 +121,14 @@ public class TestContext {
      */
     public void setTestCase(TestCase testCase) {
         this.testCase = testCase;
+    }
+
+    /**
+     * Setter method for property mockRepertory.
+     *
+     * @param mockRepertory value to be assigned to property mockRepertory
+     */
+    public void setMockRepertory(List<MockCase> mockRepertory) {
+        this.mockRepertory = mockRepertory;
     }
 }

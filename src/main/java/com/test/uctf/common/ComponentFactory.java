@@ -1,9 +1,9 @@
 package com.test.uctf.common;
 
-import com.test.uctf.common.component.ComponentProcess;
 import com.test.uctf.modal.Component;
 import com.test.uctf.standart.BasePath;
 import com.test.uctf.standart.Process;
+import com.test.uctf.standart.annotation.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,19 +30,17 @@ public class ComponentFactory {
 
     private List<Component> mockList = new ArrayList<Component>();
 
-    private List<Component> executeList = new ArrayList<Component>();
-
     private List<Component> checkList = new ArrayList<Component>();
 
     private List<Component> clearList = new ArrayList<Component>();
 
-    @Autowired
-    private List<ComponentProcess> processList;
+    private List<Component> aloneComponent = new ArrayList<Component>();
 
 
     public ComponentFactory() {}
 
     public void load(String path) {
+        LOGGER.info("加载自定义组件, 扫描文件路径：" + path);
         this.path = path;
         File baseFile = new File(path);
         if (!baseFile.exists()) {
@@ -50,7 +48,14 @@ public class ComponentFactory {
             return;
         }
         loadFileTree(baseFile);
-        split();
+        LOGGER.info("加载自定义组件完成");
+    }
+
+    public Component getComponent(String id) {
+        for(Component component : componentList) {
+            if(component.getId().equals(id)) return component;
+        }
+        return null;
     }
 
     private void loadFileTree(File baseFile) {
@@ -61,21 +66,54 @@ public class ComponentFactory {
                 String pack = baseFile.getAbsolutePath();
                 pack = pack.split(BasePath.TEST_JAVA)[1].split("\\.")[0].replace("/", ".");
                 Class<?> clazz = loader.loadClass(pack);
+
                 Method[] methods = clazz.getMethods();
                 if (methods == null) return;
                 for (Method method : methods) {
-                    for(ComponentProcess process : processList) {
-                        if(process.handle(method)) {
-                            componentList.add(
-                                    new Component(
-                                            process.getProcess(), process.getId(method),
-                                            process.getDescription(method), clazz, method, baseFile.getPath()));
-                        }
+                    Component component = null;
+                    if(method.isAnnotationPresent(Logic.class)) {
+                        Logic logic = method.getAnnotation(Logic.class);
+                        component = new Component(
+                                Process.logic, logic.id(), logic.description(),
+                                clazz, method, pack);
+                        logicList.add(component);
+                        if(logic.alone()) aloneComponent.add(component);
+                        componentList.add(component);
+                    }
+                    if(method.isAnnotationPresent(Prepare.class)) {
+                        Prepare prepare = method.getAnnotation(Prepare.class);
+                        component = new Component(
+                                Process.prepare, prepare.id(), prepare.description(),
+                                clazz, method, pack);
+                        prepareList.add(component);
+                        componentList.add(component);
+                    }
+                    if(method.isAnnotationPresent(Mock.class)) {
+                        Mock mock = method.getAnnotation(Mock.class);
+                        component = new Component(
+                                Process.mock, mock.id(), mock.description(),
+                                clazz, method, pack);
+                        mockList.add(component);
+                        componentList.add(component);
+                    }
+                    if(method.isAnnotationPresent(Check.class)) {
+                        Check check = method.getAnnotation(Check.class);
+                        component = new Component(
+                                Process.check, check.id(), check.description(),
+                                clazz, method, pack);
+                        checkList.add(component);
+                        componentList.add(component);
+                    }
+                    if(method.isAnnotationPresent(Clear.class)) {
+                        Clear clear = method.getAnnotation(Clear.class);
+                        component = new Component(
+                                Process.clear, clear.id(), clear.description(),
+                                clazz, method, pack);
+                        clearList.add(component);
+                        componentList.add(component);
                     }
                 }
-
-
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 LOGGER.info(String.format("解析失败：%s", baseFile.getName()), e);
             }
             return;
@@ -84,23 +122,6 @@ public class ComponentFactory {
         if (list == null) return;
         for (File file : list) {
             loadFileTree(file);
-        }
-    }
-
-    private void split() {
-        for(Component component : componentList) {
-            if(component.getProcess() == Process.logic)
-                logicList.add(component);
-            if(component.getProcess() == Process.prepare)
-                prepareList.add(component);
-            if(component.getProcess() == Process.mock)
-                mockList.add(component);
-            if(component.getProcess() == Process.execute)
-                executeList.add(component);
-            if(component.getProcess() == Process.check)
-                checkList.add(component);
-            if(component.getProcess() == Process.clear)
-                checkList.add(component);
         }
     }
 
@@ -123,15 +144,6 @@ public class ComponentFactory {
     }
 
     /**
-     * Getter method for property processList.
-     *
-     * @return property value of processList
-     */
-    public List<ComponentProcess> getProcessList() {
-        return processList;
-    }
-
-    /**
      * Setter method for property path.
      *
      * @param path value to be assigned to property path
@@ -147,15 +159,6 @@ public class ComponentFactory {
      */
     public void setComponentList(List<Component> componentList) {
         this.componentList = componentList;
-    }
-
-    /**
-     * Setter method for property processList.
-     *
-     * @param processList value to be assigned to property processList
-     */
-    public void setProcessList(List<ComponentProcess> processList) {
-        this.processList = processList;
     }
 
     /**
@@ -186,15 +189,6 @@ public class ComponentFactory {
     }
 
     /**
-     * Getter method for property executeList.
-     *
-     * @return property value of executeList
-     */
-    public List<Component> getExecuteList() {
-        return executeList;
-    }
-
-    /**
      * Getter method for property checkList.
      *
      * @return property value of checkList
@@ -210,5 +204,14 @@ public class ComponentFactory {
      */
     public List<Component> getClearList() {
         return clearList;
+    }
+
+    /**
+     * Getter method for property aloneComponent.
+     *
+     * @return property value of aloneComponent
+     */
+    public List<Component> getAloneComponent() {
+        return aloneComponent;
     }
 }

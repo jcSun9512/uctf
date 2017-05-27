@@ -5,6 +5,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,6 +29,7 @@ public class VelocityUtil {
 
     public static String evaluateFile(File file, Map<String, Object> paramMap) {
         try{
+            if(paramMap == null) paramMap = new HashMap<String, Object>();
             StringWriter writer = new StringWriter();
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
             VelocityContext context = new VelocityContext(paramMap);

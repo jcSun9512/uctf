@@ -1,7 +1,14 @@
-success: !!com.test.uctf.modal.TestCase
+- !!com.test.uctf.modal.TestCase
   dataId: testDataId
   logicId: testLogicId
+  description: description
   dataSource:
-    name: testname
-    age: 18
+    personId: 1
+
+- !!com.test.uctf.modal.TestCase
+  dataId: failtestDataId
+  logicId: testLogicId
+  description: description
+  dataSource:
+    person: 2
 

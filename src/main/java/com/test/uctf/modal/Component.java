@@ -16,7 +16,7 @@ public class Component {
 
     private String description;
 
-    private Class<?>  clazz;
+    private Class clazz;
 
     private Method method;
 
@@ -24,7 +24,7 @@ public class Component {
 
     private Component() {}
 
-    public Component(Process process, String id, String description, Class<?> clazz, Method method, String path) {
+    public Component(Process process, String id, String description, Class clazz, Method method, String path) {
         this.process = process;
         this.id = id;
         this.description = description;
@@ -65,7 +65,7 @@ public class Component {
      *
      * @return property value of clazz
      */
-    public Class<?> getClazz() {
+    public Class getClazz() {
         return clazz;
     }
 
@@ -119,7 +119,7 @@ public class Component {
      *
      * @param clazz value to be assigned to property clazz
      */
-    public void setClazz(Class<?> clazz) {
+    public void setClazz(Class clazz) {
         this.clazz = clazz;
     }
 

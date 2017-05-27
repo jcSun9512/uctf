@@ -21,4 +21,8 @@ public class BasePath {
     public static final String defaultComponentPath = "src/test/java/testcase";
 
     public static final String defaultApplicationPath = "spring.xml";
+
+    public static final String defaultUserApplicationPath = "META-INF/spring/*.xml";
+
+
 }

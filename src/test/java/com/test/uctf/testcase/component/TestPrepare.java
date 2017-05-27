@@ -1,12 +1,7 @@
-/**
- *   * Alipay.com Inc.
- *   * Copyright (c) 2004-2017 All Rights Reserved.
- *   
- */
 package com.test.uctf.testcase.component;
 
+import com.test.uctf.common.TestContext;
 import com.test.uctf.standart.annotation.Prepare;
-import com.test.uctf.testcase.Person;
 
 /**
   * @author jiacai.sjc
@@ -14,8 +9,10 @@ import com.test.uctf.testcase.Person;
   */
 public class TestPrepare {
 
-    @Prepare(id = "preparePerson")
-    public Person preparePerson() {
-        return new Person("jiacai", 23);
+    @Prepare(id = "testPersonId")
+    public String preparePerson(TestContext testContext, int personId) {
+        if(personId == 1) return "success";
+        return "fail";
     }
+
 }

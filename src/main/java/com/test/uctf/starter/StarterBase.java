@@ -3,6 +3,7 @@ package com.test.uctf.starter;
 import com.test.uctf.common.TestRuntime;
 import com.test.uctf.modal.TestCase;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 
 import java.util.ArrayList;
@@ -17,31 +18,39 @@ public class StarterBase {
 
     @DataProvider(name="buildAllTestCase")
     public Object[][] buildAllTestCase() {
-        List<TestCase> testCaseList = new ArrayList<TestCase>();
-        TestCase case1 = new TestCase();
-        case1.setDataId("buildAllTestCase1");
-        TestCase case2 = new TestCase();
-        case2.setDataId("buildAllTestCase2");
-        testCaseList.add(case1);
-        testCaseList.add(case2);
+        List<TestCase> testCaseList = buildTestCase(null);
         return transforIterable(testCaseList);
     }
 
     @DataProvider(name="buildSpecialTestCase")
     public Object[][] buildSpecialTestCase() {
-        List<TestCase> testCaseList = new ArrayList<TestCase>();
-        TestCase case1 = new TestCase();
-        case1.setDataId("buildSpecialTestCase1");
-        TestCase case2 = new TestCase();
-        case2.setDataId("buildSpecialTestCase2");
-        testCaseList.add(case1);
-        testCaseList.add(case2);
+        List<TestCase> testCaseList = buildTestCase(listTestCase());
         return transforIterable(testCaseList);
+    }
+
+    public List<String> listTestCase() {
+        return new ArrayList<String>();
     }
 
     @BeforeClass
     public void startTestRuntime() {
         TestRuntime.startTestRuntime();
+    }
+
+    private List<TestCase> buildTestCase(List<String> caseIdList) {
+        List<TestCase> testCaseList = TestRuntime.getTestCaseList();
+        if(caseIdList == null) return testCaseList;
+
+        List<TestCase> result = new ArrayList<TestCase>();
+        for(String caseId : caseIdList) {
+            for(TestCase testCase : testCaseList) {
+                if(testCase.getCaseId().equals(caseId)) {
+                    result.add(testCase);
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     private Object[][] transforIterable(List<TestCase> list) {
@@ -51,9 +60,5 @@ public class StarterBase {
             objectGroup[i] = new Object[] { list.get(i) };
         }
         return objectGroup;
-    }
-
-    public List<String> listTestCase() {
-        return new ArrayList<String>();
     }
 }
